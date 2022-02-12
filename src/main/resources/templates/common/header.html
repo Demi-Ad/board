@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container" th:fragment="header">
+    <header class="blog-header py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4 text-center">
+                <a class="blog-header-logo text-dark" href="/">BOARD</a>
+            </div>
+
+            <div th:unless="${session.userSessionData}">
+                <div class="col-4 d-flex justify-content-end align-items-center">
+                    <!-- TODO : 로그인 이후에 사용자 정보로 전환 -->
+                    <a class="btn btn-sm btn-outline-secondary" href="#" style="margin-right: 15px"
+                       th:href="@{/login}">Sign in</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="#" th:href="@{/user/signup}">Sign up</a>
+                    <!--end-->
+                </div>
+            </div>
+
+            <div th:if="${session.userSessionData}">
+                <div class="col-4 d-flex justify-content-end align-items-center">
+
+                    <a class="btn btn-sm btn-outline-primary" th:href="@{/user/info/{userId}(userId=${session.userSessionData.userId})}"
+                       th:text="${session.userSessionData.userNickName}" href="#" style="margin-right: 15px">
+                    </a>
+
+                    <a class="btn btn-sm btn-outline-secondary" href="#"
+                       th:href="@{/logout}">LOGOUT</a>
+
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <div class="nav-scroller py-1 mb-2">
+        <nav class="nav d-flex justify-content-start">
+            <a class="p-2 link-secondary" href="#" th:href="@{/board}">BOARD</a>
+            <a class="p-2 link-secondary" href="#">U.S.</a>
+        </nav>
+    </div>
+</div>
+
+</body>
+</html>

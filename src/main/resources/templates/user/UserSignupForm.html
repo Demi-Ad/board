@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common/head :: header ('board')}">
+    <title></title>
+</head>
+<body>
+<header th:replace="common/header :: header"></header>
+
+<div class="container" style="margin-top: 30px">
+    <div class="row justify-content-xl-center">
+        <div class="input-form col-md-12 mx-auto">
+            <h4 class="mb-3">회원가입</h4>
+            <form class="validation-form" th:object="${signupData}" th:action method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id">아이디</label>
+                        <input class="form-control" id="id" placeholder="아이디는 6~20 글자까지 허용합니다" required type="text" th:field="*{userId}">
+                        <div class="text-muted" id="userIdFail" style="display: none">중복된 아이디</div>
+                        <div class="text-muted" id="userIdSuccess" style="display: none">가입가능한 아이디</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="password">비밀번호</label>
+                        <input class="form-control" id="password" placeholder="비밀번호는 8~20글자" required type="password" th:field="*{password}">
+                        <div class="invalid-feedback"> 비밀번호 입력해주세요.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nickname">닉네임</label>
+                    <input class="form-control" id="nickname" placeholder="닉네임을 입력해주세요" required type="text" th:field="*{nickname}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email">이메일</label>
+                    <input class="form-control" id="email" placeholder="you@example.com" type="email" th:field="*{email}">
+                    <div class="text-muted">이메일도움말</div>
+                </div>
+
+                <hr class="mb-4">
+                <div class="d-grid">
+                    <button class="btn btn-primary" id="btn-signup" disabled type="submit">가입 완료</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const idCheckURL = "/user/useridCheck"
+    let signUpValidation = {
+        id:false,
+        password:false,
+        nickname:false
+    }
+    $(window).load("load",function () {
+        //Id Validation
+        $("#id").on("input",function () {
+            let currentVal = $(this).val();
+            if (currentVal.length >= 6) {
+                $.ajax({
+                    type:"POST",
+                    dataType:"json",
+                    contentType:"application/json",
+                    url:idCheckURL,
+                    data:JSON.stringify({userId:currentVal}),
+                    success:function (res) {
+                        if (res.data === true) {
+                            $("#id").addClass("btn-outline-success").removeClass("btn-outline-danger")
+                            $("#userIdFail").css("display","none")
+                            $("#userIdSuccess").css("display","block")
+                            signUpValidation.id = true
+                        } else {
+                            $("#id").addClass("btn-outline-danger").removeClass("btn-outline-success")
+                            $("#userIdFail").css("display","block")
+                            $("#userIdSuccess").css("display","none")
+                            signUpValidation.id = false
+                        }
+                        signUpBtnValidation()
+                    },
+                    error:function (e) {
+                        console.log(e);
+                    }
+                })
+            } else {
+                $("#id").addClass("btn-outline-danger").removeClass("btn-outline-success")
+                $("#userIdSuccess").css("display","none")
+            }
+        })//End IdValidation
+
+        $("#password").on("input",function (){
+            let currentVal = $(this).val();
+            if (currentVal.length >=8 && currentVal.length < 21) {
+                signUpValidation.password = true
+                $("#password").addClass("btn-outline-success").removeClass("btn-outline-danger")
+                signUpBtnValidation()
+            }
+            else {
+                signUpValidation.password = false
+                $("#password").addClass("btn-outline-danger").removeClass("btn-outline-success")
+                signUpBtnValidation()
+            }
+        })
+
+        $("#nickname").on("input",function () {
+            let currentVal = $(this).val();
+            if (currentVal.length >= 2 && currentVal.length < 11) {
+                signUpValidation.nickname = true
+                $("#nickname").addClass("btn-outline-success").removeClass("btn-outline-danger")
+                signUpBtnValidation()
+            } else {
+                signUpValidation.nickname = false
+                $("#nickname").addClass("btn-outline-danger").removeClass("btn-outline-success")
+                signUpBtnValidation()
+            }
+        })
+    })
+
+    function signUpBtnValidation() {
+        if (signUpValidation.id === true && signUpValidation.password === true && signUpValidation.nickname === true) {
+            document.getElementById("btn-signup").disabled = false;
+        } else {
+            document.getElementById("btn-signup").disabled = true;
+        }
+    }
+</script>
+</body>
+</html>

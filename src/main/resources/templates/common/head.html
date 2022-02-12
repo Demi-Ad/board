@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header (title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}"></title>
+
+    <!-- JQUERY 회원가입 / 댓글작성 -->
+    <script th:src="@{/js/jquery-3.6.0.min.js}" src="/static/js/jquery-3.6.0.min.js" rel="script" type="text/javascript"></script>
+    <!-- BOOTSTRAP 공통 -->
+    <link th:href="@{/css/bootstrap.css}" href="/static/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/custom.css}" href="/static/css/custom.css" rel="stylesheet" type="text/css">
+    <script th:src="@{/js/bootstrap.bundle.js}" src="/static/js/bootstrap.bundle.js" rel="script" type="text/javascript"></script>
+
+    <!-- 로그인 한 상태에서 -->
+    <script th:if="${session.userSessionData}" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js" rel="script"></script>
+
+    <!-- 글 쓸때 -->
+    <script th:src="@{/js/summernote-lite.min.js}"></script>
+    <script th:src="@{/js/summernote-ko-KR.min.js}"></script>
+    <link th:href="@{/css/summernote-lite.min.css}" rel="stylesheet">
+
+</head>
+<body>
+<script>
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+server:
+    port: 8080
+    servlet:
+        session:
+            tracking-modes: COOKIE
+
+spring:
+    profiles:
+        default: create

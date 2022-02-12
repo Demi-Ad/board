@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common/head :: header ('board')}">
+    <title></title>
+</head>
+<body>
+<header th:replace="common/header :: header"></header>
+
+<div class="container h-100">
+    <div class="row justify-content-lg-center h-100">
+        <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
+                    <form method="POST" class="needs-validation" th:action th:object="${loginData}">
+                        <p th:if="${#fields.hasGlobalErrors()}" th:text="'가입하지 않은 사용자입니다!'"></p>
+                        <div class="mb-3">
+                            <input th:errorclass="border-danger" id="userId" placeholder="id" type="text" class="form-control" name="email" th:field="*{userId}">
+                            <span th:if="${#fields.hasErrors('userId')}" class="text-muted" th:text="'아이디 확인!'"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <input id="password" placeholder="password" th:errorclass="border-danger" type="password" class="form-control" th:field="*{userPassword}">
+                            <span th:if="${#fields.hasErrors('userPassword')}" class="text-muted" th:text="'비밀번호 확인!'"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer py-4 border-0">
+                    <div th:if="${#httpServletRequest.getParameter('requestUri') ?: null}">
+                        <p class="h4 text-center">로그인이 필요한 서비스입니다.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5 text-muted">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

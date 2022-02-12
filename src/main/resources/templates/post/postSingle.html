@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common/head :: header ('board')}">
+    <title></title>
+</head>
+<body>
+
+<div class="container">
+    <nav th:replace="common/header :: header"></nav>
+    <div class="mt-5">
+        <div class="col">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1 mt-2" th:text="${post.title}">Welcome to Blog Post!</h1>
+                    <!-- Post meta content-->
+                    <div class="text-muted fst-italic mb-2" th:text="|Posted On ${#temporals.format(post.lastModifiedDate,'MM dd, yyyy')} by ${post.author}|">
+                        Posted on January 1, 2021 by Start Bootstrap
+                    </div>
+                    <!-- Post categories-->
+                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
+                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                </header>
+                <!-- Preview image figure-->
+
+                <!-- Post content-->
+                <section class="mb-5">
+                    <p class="fs-5 mb-4" th:utext="${post.content}"></p>
+                </section>
+            </article>
+
+            <!-- TODO : 유저 인증로직 추가 -->
+            <div class="mt-3" th:if="${post.isUpdatable()}">
+                <a th:href="@{/post/{post}/edit(post=${post.id})}" class="btb btn-outline-success btn-sm">수정</a>
+                <a th:href="@{/post/{post}/delete(post=${post.id})}" class="btb btn-outline-danger btn-sm">삭제</a>
+            </div>
+
+            <!-- Comments section-->
+            <section class="mb-5 mt-5">
+                <h3>Comment</h3>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <!-- Comment form-->
+                        <form class="mb-4" method="post" th:action="@{/comment}" th:object="${commentForm}">
+                            <textarea id="comment-text" class="form-control" placeholder="댓글을 작성해주세요" rows="3" th:field="*{mainText}"></textarea>
+                            <div class="row">
+                                <div class="col-1">
+                                    <span th:errors="*{mainText}" class="text-black"></span>
+                                </div>
+                                <div class="col-1 offset-10">
+                                    <button class="btn btn-outline-primary mt-4 btn-sm" id="comment-btn" type="submit">댓글등록</button>
+                                </div>
+
+                            </div>
+                            <input type="hidden" th:field="*{userId}">
+                            <input type="hidden" th:field="*{postId}">
+                        </form>
+
+                        <!--comments-->
+                        <div th:each="comment : ${post.commentList}">
+                            <div class="card border-success mb-3">
+                                <div class="card-header bg-transparent border-success fst-italic fs-5">
+                                    <span th:text="| createdBy : ${comment.nickname}|"></span>
+                                    <a class="btn btn-outline-danger btn-sm ms-3" th:if="${comment.isDeletable()}"
+                                       th:href="@{/comment/{id}/delete(id=${comment.commentId})}">삭제</a>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text" th:text="${comment.commentText}"></p>
+                                </div>
+                                <div class="card-footer bg-transparent border-success" th:text="${comment.lastModifiedDate}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        const url = new URL(window.location.href)
+        if (url.searchParams.get("commentErr") != null) {
+            alert("댓글 본문을 입력해주세요")
+        }
+    }
+</script>
+</body>
+</html>
