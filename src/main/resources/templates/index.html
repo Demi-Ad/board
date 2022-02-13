@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{common/head :: header ('board')}">
+<head th:insert="~{common/head :: head}">
     <title></title>
 </head>
 <body>
@@ -21,6 +21,6 @@
         </div>
     </div>
 </main>
-<script th:if="${session.userSessionData}" th:replace="common/websocket :: ws"></script>
+<div th:insert="common/head :: ws"></div>
 </body>
 </html>

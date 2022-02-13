@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{common/head :: header ('board')}">
+<head th:insert="~{common/head :: head}">
     <title></title>
 </head>
 <body>
@@ -77,5 +77,6 @@
 
 
 </div>
+<div th:replace="common/head :: ws"></div>
 </body>
 </html>

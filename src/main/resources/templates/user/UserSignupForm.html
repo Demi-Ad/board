@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{common/head :: header ('board')}">
+<head th:insert="~{common/head :: head}">
+    <script th:src="@{/js/jquery-3.6.0.min.js}" src="/static/js/jquery-3.6.0.min.js" rel="script" type="text/javascript"></script>
     <title></title>
 </head>
 <body>
@@ -124,5 +125,6 @@
         }
     }
 </script>
+<div th:replace="common/head :: ws"></div>
 </body>
 </html>

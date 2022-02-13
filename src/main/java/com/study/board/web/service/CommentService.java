@@ -12,7 +12,7 @@ import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.dto.commentdto.CommentRequestDto;
 import com.study.board.web.dto.commentdto.CommentResponseDto;
 import com.study.board.web.exception.PostNotFoundException;
-import com.study.board.web.util.UserIdContext;
+import com.study.board.web.util.UserContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final UserIdContext context;
+    private final UserContext context;
 
     public CommentResponseDto addComment(CommentRequestDto requestDto) throws UserNotFoundException, PostNotFoundException {
         Comment comment = createComment(requestDto);
@@ -40,9 +40,9 @@ public class CommentService {
     private Comment createComment(CommentRequestDto requestDto) {
         Long postId = requestDto.getPostId();
         String userId = requestDto.getUserId();
-        context.setContext(userId);
         User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findSingleById(postId).orElseThrow(PostNotFoundException::new);
+        context.setUser(user);
         return new Comment(requestDto.getComment(), user, post);
     }
 

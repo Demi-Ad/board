@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="header (title)">
+<head th:fragment="head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="${title}"></title>
+    <title>BOARD</title>
 
     <!-- JQUERY 회원가입 / 댓글작성 -->
     <script th:src="@{/js/jquery-3.6.0.min.js}" src="/static/js/jquery-3.6.0.min.js" rel="script" type="text/javascript"></script>
@@ -13,19 +13,57 @@
     <script th:src="@{/js/bootstrap.bundle.js}" src="/static/js/bootstrap.bundle.js" rel="script" type="text/javascript"></script>
 
     <!-- 로그인 한 상태에서 -->
-    <script th:if="${session.userSessionData}" src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js" rel="script"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <th:block th:if="${session.userSessionData}">
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js" rel="script"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    </th:block>
 
     <!-- 글 쓸때 -->
-    <script th:src="@{/js/summernote-lite.min.js}"></script>
-    <script th:src="@{/js/summernote-ko-KR.min.js}"></script>
-    <link th:href="@{/css/summernote-lite.min.css}" rel="stylesheet">
+    <th:block th:if="${#request.getRequestURI().equals('/post/new')}">
+        <script th:src="@{/js/summernote-lite.min.js}"></script>
+        <script th:src="@{/js/summernote-ko-KR.min.js}"></script>
+        <link th:href="@{/css/summernote-lite.min.css}" rel="stylesheet">
+    </th:block>
 
 </head>
 <body>
-<script>
+<script th:fragment="ws" type="text/javascript" th:if="${session.userSessionData}" th:inline="javascript"
+        th:with="userId = ${session.userSessionData.userId}">
+
+    let socket = new SockJS("/ws")
+    let client = Stomp.over(socket);
+    let userId = [[${userId}]]
+
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "100",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    client.connect({}, function (frame) {
+        console.log(frame)
+        client.subscribe("/comment-ws/"+userId,function (commentToast) {
+            console.log(commentToast)
+            const body = JSON.parse(commentToast.body)
+            toastr.options = {"onclick": function () {
+                    window.location.href = "/post/" + body.postId;
+                }}
+            toastr.success(body.writer + " : " + body.comment,"title: " + body.title)
+        })
+    })
 
 </script>
 </body>

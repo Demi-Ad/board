@@ -13,10 +13,12 @@ public class CommentWSForm {
     private Long postId;
     private String writer;
     private String comment;
+    private String title;
 
-    public CommentWSForm(CommentRequestDto requestDto) {
+    public CommentWSForm(CommentRequestDto requestDto,String title,String userNickname) {
         this.postId = requestDto.getPostId();
-        this.writer = requestDto.getUserId();
+        this.writer = userNickname;
         this.comment = requestDto.getComment();
+        this.title = title;
     }
 }
