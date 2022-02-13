@@ -36,7 +36,6 @@ public class LoginController {
                         BindingResult bindingResult,
                         HttpServletRequest request, HttpServletResponse response) {
 
-
         if (bindingResult.hasErrors()) {
             return "/user/UserLoginForm";
         }

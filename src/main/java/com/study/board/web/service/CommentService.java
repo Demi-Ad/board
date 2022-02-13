@@ -12,6 +12,7 @@ import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.dto.commentdto.CommentRequestDto;
 import com.study.board.web.dto.commentdto.CommentResponseDto;
 import com.study.board.web.exception.PostNotFoundException;
+import com.study.board.web.util.UserContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,11 @@ import java.util.Objects;
 @Slf4j
 @Transactional
 public class CommentService {
+
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final UserContext context;
 
     public CommentResponseDto addComment(CommentRequestDto requestDto) throws UserNotFoundException, PostNotFoundException {
         Comment comment = createComment(requestDto);
@@ -39,7 +42,8 @@ public class CommentService {
         String userId = requestDto.getUserId();
         User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findSingleById(postId).orElseThrow(PostNotFoundException::new);
-        return new Comment(requestDto.getMainText(), user, post);
+        context.setUser(user);
+        return new Comment(requestDto.getComment(), user, post);
     }
 
     public Long commentDelete(Long commentId, UserSessionData userSessionData) {
