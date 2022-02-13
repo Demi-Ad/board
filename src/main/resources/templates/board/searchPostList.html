@@ -60,7 +60,8 @@
                     <li th:each="page: ${#numbers.sequence(startPage,endPage)}"
                         th:classappend="${pagination.curPage == page ? 'active' : ''}"
                         class="page-item">
-                        <a class="page-link" th:text="${page}" th:href="@{/board(page=${page})}"></a>
+                        <a class="page-link" th:text="${page}"
+                           th:href="@{/board/search(searchType=${searchCriteria.searchType},searchText=${searchCriteria.searchText},page=${page})}"></a>
                     </li>
 
                     <li th:classappend="${pagination.isHasNext() == false ? 'disabled' : ''}" class="page-item">
@@ -76,14 +77,6 @@
 
 
 </div>
-<script>
-    window.onload = function () {
-        const url = new URL(window.location.href)
-        if (url.searchParams.get("searchErr") != null) {
-            alert("2글자 이상 입력해주세요")
-        }
-    }
-</script>
 <div th:replace="common/head :: ws"></div>
 </body>
 </html>

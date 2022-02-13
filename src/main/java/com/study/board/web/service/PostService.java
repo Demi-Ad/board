@@ -45,11 +45,6 @@ public class PostService {
         return post.getId();
     }
 
-    @Transactional(readOnly = true)
-    public Page<BoardListDto> getPostList(int pageNum) {
-        PageRequest pageRequest = PageRequest.of(pageNum-1, 10, Sort.Direction.DESC, "createdDate");
-        return postRepository.findAll(pageRequest).map(BoardListDto::new);
-    }
 
 
 
