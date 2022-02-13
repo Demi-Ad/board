@@ -3,6 +3,8 @@ package com.study.board.web.controller;
 import com.study.board.web.common.UserSessionData;
 import com.study.board.web.dto.commentdto.CommentRequestDto;
 import com.study.board.web.service.CommentService;
+import com.study.board.web.util.CommentWebSocketUtil;
+import com.study.board.web.util.UserIdContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ import java.util.Objects;
 public class CommentController {
 
     private final CommentService commentService;
+    private final CommentWebSocketUtil webSocketUtil;
+    private final UserIdContext context;
 
     @PostMapping("/comment")
     public String createComment(@Valid @ModelAttribute CommentRequestDto commentRequestDto,
@@ -39,6 +43,7 @@ public class CommentController {
         }
 
         commentService.addComment(commentRequestDto);
+        webSocketUtil.webSocketCall(commentRequestDto, context.getContext());
         return "redirect:/post/{postId}";
     }
 

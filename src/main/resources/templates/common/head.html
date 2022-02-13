@@ -13,7 +13,10 @@
     <script th:src="@{/js/bootstrap.bundle.js}" src="/static/js/bootstrap.bundle.js" rel="script" type="text/javascript"></script>
 
     <!-- 로그인 한 상태에서 -->
-    <script th:if="${session.userSessionData}" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js" rel="script"></script>
+    <script th:if="${session.userSessionData}" src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js" rel="script"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <!-- 글 쓸때 -->
     <script th:src="@{/js/summernote-lite.min.js}"></script>
@@ -23,6 +26,7 @@
 </head>
 <body>
 <script>
+
 </script>
 </body>
 </html>

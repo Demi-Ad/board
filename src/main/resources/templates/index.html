@@ -21,6 +21,6 @@
         </div>
     </div>
 </main>
-
+<script th:if="${session.userSessionData}" th:replace="common/websocket :: ws"></script>
 </body>
 </html>

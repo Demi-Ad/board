@@ -101,7 +101,7 @@ public class PostController {
     }
 
     @PostMapping("/{postId}/edit")
-    public String PageEdit(@PathVariable Long postId,
+    public String pageEdit(@PathVariable Long postId,
                            @ModelAttribute PostCreateDto postCreateDto,
                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

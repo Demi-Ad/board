@@ -37,11 +37,6 @@ public class UserSignupDto {
 
 
     public User toEntity() {
-        return User.builder()
-                .userId(this.userId)
-                .password(this.password)
-                .email(this.email)
-                .nickname(this.nickname)
-                .build();
+        return User.builder().userId(this.userId).password(this.password).email(this.email).nickname(this.nickname).build();
     }
 }

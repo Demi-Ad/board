@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script th:fragment="ws" type="text/javascript" th:if="${session.userSessionData}" th:inline="javascript" th:with="userId = ${session.userSessionData.userId}">
+
+
+    let socket = new SockJS("/ws")
+    let client = Stomp.over(socket);
+    let userId = [[${userId}]]
+
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "100",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    client.connect({}, function (frame) {
+        console.log(frame)
+        client.subscribe("/comment-ws/"+userId,function (commentToast) {
+            console.log(commentToast)
+            const body = JSON.parse(commentToast.body)
+            toastr.options = {"onclick": function () {
+                window.location.href = "/post/" + body.postId;
+                }}
+            toastr.success(body.writer + " : " + body.comment)
+        })
+    })
+</script>
+</body>
+</html>`

@@ -24,15 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BoardController {
 
     private final PostService postService;
-    private final UserService userService;
-    private final PostRepository repository;
     private final PaginationUtil paginationUtil;
 
     private final int SHOW_ONE_PAGE_BLOCK = 5;
     private final int SHOW_ONE_PAGE_POST = 10;
 
     @GetMapping()
-    public String BoardList(@RequestParam(value = "page",defaultValue = "1") int pageNum, Model model) {
+    public String boardList(@RequestParam(value = "page",defaultValue = "1") int pageNum, Model model) {
         Page<BoardListDto> postList = postService.getPostList(pageNum);
         PaginationDto paginationDto = paginationUtil.of(postList.getTotalElements(), SHOW_ONE_PAGE_BLOCK, SHOW_ONE_PAGE_POST, pageNum);
         log.info("paginationDto = {}", paginationDto);
@@ -42,14 +40,14 @@ public class BoardController {
     }
 
 //    @PostConstruct
-    void init() {
-        User user = new User("votm777","ttpp1212","aaaa","");
-        Long userIdx = userService.join(user);
-
-        for (int i = 0; i < 100; i++) {
-            Post post = new Post("테스트 " + i, "data");
-            post.userPublish(user);
-            repository.save(post);
-        }
-    }
+//    void init() {
+//        User user = new User("votm777","ttpp1212","aaaa","");
+//        Long userIdx = userService.join(user);
+//
+//        for (int i = 0; i < 100; i++) {
+//            Post post = new Post("테스트 " + i, "data");
+//            post.userPublish(user);
+//            repository.save(post);
+//        }
+//    }
 }

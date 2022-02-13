@@ -61,7 +61,6 @@ public class PostService {
                 RequestContextHolder.getRequestAttributes();
 
         boolean isUpdatable = false;
-        boolean isDeletable = false;
 
         if (requestAttributes != null) {
             HttpServletRequest request = requestAttributes.getRequest();

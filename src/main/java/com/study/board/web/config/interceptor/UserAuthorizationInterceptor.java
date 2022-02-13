@@ -44,7 +44,7 @@ public class UserAuthorizationInterceptor implements HandlerInterceptor {
             log.info("postId = {}", requestURI.split("/")[2]);
             long postId = Long.parseLong(requestURI.split("/")[2]);
 
-            Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+            Post post = postRepository.findWithUserById(postId).orElseThrow(PostNotFoundException::new);
             if (post.getUser().getNickname().equals(userSessionData.getUserNickName())) {
                 return true;
             }

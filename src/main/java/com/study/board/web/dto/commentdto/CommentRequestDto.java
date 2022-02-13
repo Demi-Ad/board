@@ -15,5 +15,5 @@ public class CommentRequestDto {
     private String userId;
     @NotBlank
     @NotNull
-    private String mainText;
+    private String comment;
 }
