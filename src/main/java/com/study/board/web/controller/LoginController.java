@@ -37,7 +37,7 @@ public class LoginController {
                         HttpServletRequest request, HttpServletResponse response) {
 
         if (bindingResult.hasErrors()) {
-            return "/user/UserLoginForm";
+            return "user/UserLoginForm";
         }
         try {
             UserSessionData userSessionData = userService.login(dto);
@@ -53,7 +53,7 @@ public class LoginController {
 
         } catch (UserNotFoundException userNotFoundException) {
             bindingResult.reject("userNotFound");
-            return "/user/UserLoginForm";
+            return "user/UserLoginForm";
         }
     }
 

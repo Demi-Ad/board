@@ -6,16 +6,12 @@ import com.study.board.domain.entity.user.User;
 import com.study.board.domain.entity.user.repository.UserRepository;
 import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.common.UserSessionData;
-import com.study.board.web.dto.boarddto.BoardListDto;
 import com.study.board.web.dto.commentdto.CommentResponseDto;
 import com.study.board.web.exception.PostNotFoundException;
 import com.study.board.web.dto.postdto.PostResponseDto;
 import com.study.board.web.dto.postdto.PostCreateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -65,7 +61,6 @@ public class PostService {
                 if (userSessionData != null) {
                     if (Objects.equals(post.getUser().getId(), userSessionData.getId())) {
                         isUpdatable = true;
-
                     }
                 }
             }
@@ -100,10 +95,9 @@ public class PostService {
                 .build();
     }
 
-    public Long updatePost(PostCreateDto postCreateDto, Long postId) {
+    public void updatePost(PostCreateDto postCreateDto, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         post.changePost(postCreateDto.getTitle(), postCreateDto.getContents());
-        return post.getId();
     }
 
 

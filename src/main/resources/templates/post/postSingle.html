@@ -6,7 +6,7 @@
 <body>
 
 <div class="container">
-    <nav th:replace="common/header :: header"></nav>
+    <nav th:replace="~{common/header :: header}"></nav>
     <div class="mt-5">
         <div class="col">
             <!-- Post content-->
@@ -86,6 +86,6 @@
         }
     }
 </script>
-<div th:replace="common/head :: ws"></div>
+<div th:replace="~{common/head :: ws}"></div>
 </body>
 </html>
