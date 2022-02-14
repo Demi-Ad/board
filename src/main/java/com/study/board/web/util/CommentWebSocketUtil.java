@@ -28,7 +28,7 @@ public class CommentWebSocketUtil {
         Post post = postRepository.findWithUserById(requestDto.getPostId()).orElseThrow(PostNotFoundException::new);
         String userId = post.getUser().getUserId();
 
-        log.info("test : userId = {}, targetId = {}",userId,targetUserId);
+        log.info("socket : userId = {}, targetId = {}",userId,targetUserId);
         if (userId.equals(targetUserId)) {
             return;
         }

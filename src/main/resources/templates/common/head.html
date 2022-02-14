@@ -27,6 +27,13 @@
         <link th:href="@{/css/summernote-lite.min.css}" rel="stylesheet">
     </th:block>
 
+    <!-- 글 수정 -->
+    <th:block th:if="${#request.getRequestURI().matches('\/post\/[0-9]+\/edit')}">
+        <script th:src="@{/js/summernote-lite.min.js}"></script>
+        <script th:src="@{/js/summernote-ko-KR.min.js}"></script>
+        <link th:href="@{/css/summernote-lite.min.css}" rel="stylesheet">
+    </th:block>
+
 </head>
 <body>
 <script th:fragment="ws" type="text/javascript" th:if="${session.userSessionData}" th:inline="javascript"

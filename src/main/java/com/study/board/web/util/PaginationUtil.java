@@ -16,8 +16,6 @@ public class PaginationUtil {
         int startPage = (endPage - showOnePagePagingBlock) + 1;
         startPage = startPage < 0 ? 1 : startPage;
 
-        log.info("start = {}", startPage);
-
         if (tempEndPage == currPage) {
             startPage = tempEndPage;
             endPage = tempEndPage;
@@ -25,10 +23,6 @@ public class PaginationUtil {
 
         boolean isPrev = startPage != 1;
         boolean isNext = currPage < tempEndPage;
-
-        log.info("tempEndPage = {}", tempEndPage);
-        log.info("endPage = {}", endPage);
-        log.info("startPage = {}", startPage);
 
 
         return PaginationDto.builder()

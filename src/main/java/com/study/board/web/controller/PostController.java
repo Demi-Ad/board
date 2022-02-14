@@ -1,5 +1,6 @@
 package com.study.board.web.controller;
 
+import com.study.board.web.dto.postdto.PostImageDeleteDto;
 import com.study.board.web.dto.postdto.PostImageResponseDto;
 import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.common.UserSessionData;
@@ -138,6 +139,16 @@ public class PostController {
         }
         log.info("dto = {}",responseDto);
         return responseDto;
+    }
+
+    @PostMapping("/deleteImage")
+    @ResponseBody
+    public boolean deleteUploadImage(@RequestBody PostImageDeleteDto postImageDeleteDto) {
+        if (postImageDeleteDto.getDeleteImages().isEmpty()) {
+            return true;
+        }
+        postImageService.deleteImage(postImageDeleteDto.getDeleteImages());
+        return true;
     }
 
 }

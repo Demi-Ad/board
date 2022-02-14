@@ -37,7 +37,7 @@
                 <button class="btn btn-success" type="submit">작성완료</button>
             </div>
             <div class="col-auto">
-                <a class="btn btn-success" th:href="@{/board}">
+                <a class="btn btn-danger" onclick="cancelPost()">
                     작성취소
                 </a>
             </div>
@@ -48,6 +48,7 @@
 <script>
     $(".summernote").summernote({
         height:400,
+        id:'',
         lang: "ko-KR",
         callbacks: {
             onImageUpload: function (file) {
@@ -76,6 +77,33 @@
             processData:false,
             success:function (data) {
                 $(editor).summernote('insertImage',data.url);
+            }
+        })
+    }
+
+    function cancelPost() {
+        const form = document.querySelector("body > div.container > form > div:nth-child(3) > div > div.note-editing-area > div.note-editable")
+        const html = form.innerHTML
+        const images = html.match(/(\w+-){4}\w+.\w+/g)
+
+        if (images == null || images.length === 0) {
+            location.href = "/board";
+            return;
+        }
+
+        const deleteImages = {"deleteImages" : images}
+
+        $.ajax({
+            data:JSON.stringify(deleteImages),
+            type:"post",
+            dataType:"json",
+            contentType: "application/json",
+            url:"/post/deleteImage",
+            success:function () {
+                location.href = "/board"
+            },
+            error: function () {
+                location.href = "/board"
             }
         })
     }
