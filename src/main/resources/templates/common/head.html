@@ -71,7 +71,10 @@
             toastr.success(body.writer + " : " + body.comment,"title: " + body.title)
         })
     })
-
+    window.onunload = function () {
+        client.disconnect();
+        socket.disconnect();
+    }
 </script>
 </body>
 </html>
