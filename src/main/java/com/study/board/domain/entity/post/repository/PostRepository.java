@@ -35,5 +35,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p where p.user.nickname = :nickname order by p.createdDate DESC")
     Page<Post> findUserNickname(@Param("nickname") String nickname, Pageable pageable);
 
+    @Query("select p.contents from Post p")
+    List<String> findAllContents();
 
 }

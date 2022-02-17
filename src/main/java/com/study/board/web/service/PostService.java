@@ -9,7 +9,7 @@ import com.study.board.web.common.UserSessionData;
 import com.study.board.web.dto.commentdto.CommentResponseDto;
 import com.study.board.web.exception.PostNotFoundException;
 import com.study.board.web.dto.postdto.PostResponseDto;
-import com.study.board.web.dto.postdto.PostCreateDto;
+import com.study.board.web.dto.postdto.PostDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,11 +31,11 @@ public class PostService {
     private final UserRepository userRepository;
 
 
-    public Long save(PostCreateDto postCreateDto) throws UserNotFoundException {
-        User user = userRepository.findByUserId(postCreateDto.getUserId())
+    public Long save(PostDto postDto) throws UserNotFoundException {
+        User user = userRepository.findByUserId(postDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        Post post = postCreateDto.toEntity();
+        Post post = postDto.toEntity();
         post.userPublish(user);
         postRepository.save(post);
         return post.getId();
@@ -95,9 +95,9 @@ public class PostService {
                 .build();
     }
 
-    public void updatePost(PostCreateDto postCreateDto, Long postId) {
+    public void updatePost(PostDto postDto, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        post.changePost(postCreateDto.getTitle(), postCreateDto.getContents());
+        post.changePost(postDto.getTitle(), postDto.getContents());
     }
 
 

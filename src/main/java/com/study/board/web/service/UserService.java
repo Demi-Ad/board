@@ -31,9 +31,9 @@ public class UserService {
         return userRepository.save(signupDto.toEntity()).getId();
     }
 
-    public Long join(User user) {
-        return userRepository.save(user).getId();
-    }
+//    public Long join(User user) {
+//        return userRepository.save(user).getId();
+//    }
 
     public Boolean idDuplicateCheck(String userId) {
         return !userRepository.existsByUserIdEquals(userId);

@@ -1,7 +1,6 @@
 package com.study.board.web.dto.postdto;
 
 import com.study.board.domain.entity.post.Post;
-import com.study.board.web.dto.postdto.PostResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +13,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostCreateDto {
+public class PostDto {
 
     private String userId;
 
@@ -31,7 +30,7 @@ public class PostCreateDto {
         return new Post(title, contents);
     }
 
-    public PostCreateDto(PostResponseDto postResponseDto, String userId) {
+    public PostDto(PostResponseDto postResponseDto, String userId) {
         this.userId = userId;
         this.userNickname = postResponseDto.getAuthor();
         this.title = postResponseDto.getTitle();
