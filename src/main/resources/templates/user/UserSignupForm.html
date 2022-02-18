@@ -57,7 +57,7 @@
     $(window).load("load",function () {
         //Id Validation
         $("#id").on("input",function () {
-            let currentVal = $(this).val();
+            let currentVal = $("#id").val();
             if (currentVal.length >= 6) {
                 $.ajax({
                     type:"POST",
@@ -90,7 +90,7 @@
         })//End IdValidation
 
         $("#password").on("input",function (){
-            let currentVal = $(this).val();
+            let currentVal = $("#password").val();
             if (currentVal.length >=8 && currentVal.length < 21) {
                 signUpValidation.password = true
                 $("#password").addClass("btn-outline-success").removeClass("btn-outline-danger")
@@ -104,7 +104,7 @@
         })
 
         $("#nickname").on("input",function () {
-            let currentVal = $(this).val();
+            let currentVal = $("#nickname").val();
             if (currentVal.length >= 2 && currentVal.length < 11) {
                 signUpValidation.nickname = true
                 $("#nickname").addClass("btn-outline-success").removeClass("btn-outline-danger")

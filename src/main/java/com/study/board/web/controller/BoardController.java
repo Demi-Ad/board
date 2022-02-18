@@ -4,6 +4,7 @@ import com.study.board.web.dto.boarddto.BoardListDto;
 import com.study.board.web.dto.boarddto.PaginationDto;
 import com.study.board.web.dto.searchdto.SearchCriteria;
 import com.study.board.web.service.BoardService;
+import com.study.board.web.util.Constants;
 import com.study.board.web.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +28,18 @@ public class BoardController {
     private final BoardService boardService;
     private final PaginationUtil paginationUtil;
 
-    private final int SHOW_ONE_PAGE_BLOCK = 5;
-    private final int SHOW_ONE_PAGE_POST = 10;
+
 
 
 
     @GetMapping()
     public String boardList(@RequestParam(value = "page",defaultValue = "1") int pageNum, Model model) {
         Page<BoardListDto> postList = boardService.getPostList(pageNum);
-        PaginationDto paginationDto = paginationUtil.of(postList.getTotalElements(), SHOW_ONE_PAGE_BLOCK, SHOW_ONE_PAGE_POST, pageNum);
+
+        PaginationDto paginationDto = paginationUtil.of(postList.getTotalElements(),
+                Constants.SHOW_ONE_PAGE_BLOCK,
+                Constants.SHOW_ONE_PAGE_POST, pageNum);
+
         log.info("paginationDto = {}", paginationDto);
         model.addAttribute("searchCriteria",new SearchCriteria());
         model.addAttribute("postList", postList);
@@ -54,7 +58,8 @@ public class BoardController {
         }
 
         Page<BoardListDto> postList = boardService.getPostListCriteria(searchCriteria, pageNum);
-        PaginationDto paginationDto = paginationUtil.of(postList.getTotalElements(), SHOW_ONE_PAGE_BLOCK, SHOW_ONE_PAGE_POST, pageNum);
+        PaginationDto paginationDto = paginationUtil.of(postList.getTotalElements(), Constants.SHOW_ONE_PAGE_BLOCK,
+                Constants.SHOW_ONE_PAGE_POST, pageNum);
 
         model.addAttribute("postList", postList);
         model.addAttribute("pagination",paginationDto);
