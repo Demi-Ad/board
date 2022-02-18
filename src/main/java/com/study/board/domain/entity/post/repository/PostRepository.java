@@ -38,4 +38,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p.contents from Post p")
     List<String> findAllContents();
 
+    Page<Post> getByUser_UserIdEquals(String userId, Pageable pageable);
+
+
+
+
 }

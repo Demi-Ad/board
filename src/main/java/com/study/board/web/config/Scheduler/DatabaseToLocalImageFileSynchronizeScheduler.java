@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional(readOnly = true)
-public class DBLocalImageFileSynchronize {
+public class DatabaseToLocalImageFileSynchronizeScheduler {
 
     private final PostRepository postRepository;
 

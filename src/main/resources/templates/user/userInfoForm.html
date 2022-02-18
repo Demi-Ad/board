@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{common/head :: head}">
+    <title></title>
+</head>
+<body>
+<header th:replace="common/header :: header"></header>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-3">
+            <div style="width: 280px;">
+                <a class="align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <span class="fs-4" th:text="${userInfo.userId}">Sidebar</span> <!-- 유저이름 -->
+                </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a aria-current="page" class="nav-link active" href="#">
+                            작성글
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link link-dark" href="#">
+                            정보수정 <!-- 세션 체크 -->
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">글번호</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">조회수</th>
+                        <th scope="col">작성날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="post : ${userInfo.publishedPostDtoList}"
+                        th:onclick="'window.location.href = \'' + @{/post/{id}(id=${post.id})} + '\''">
+                        <td th:text="${post.id}"></td>
+                        <td th:text="${post.title}"></td>
+                        <td th:text="${post.postHit}"></td>
+                        <td th:text="${#temporals.format(post.lastModifiedDate,'yyyy-MM-dd hh:mm')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<div th:replace="common/head :: ws"></div>
+</html>
