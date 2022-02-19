@@ -1,15 +1,14 @@
 package com.study.board.web.controller;
 
-import com.study.board.domain.entity.post.Post;
-import com.study.board.web.dto.postdto.PostImageDeleteDto;
-import com.study.board.web.dto.postdto.PostImageResponseDto;
-import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.common.UserSessionData;
 import com.study.board.web.dto.commentdto.CommentRequestDto;
+import com.study.board.web.dto.postdto.PostDto;
+import com.study.board.web.dto.postdto.PostImageDeleteDto;
+import com.study.board.web.dto.postdto.PostImageResponseDto;
 import com.study.board.web.dto.postdto.PostResponseDto;
+import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.service.PostImageService;
 import com.study.board.web.service.PostService;
-import com.study.board.web.dto.postdto.PostDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -52,8 +51,7 @@ public class PostController {
                              BindingResult bindingResult,
                              @SessionAttribute UserSessionData userSessionData,
                              RedirectAttributes redirectAttributes) {
-        log.info("userdata = {}", userSessionData);
-        log.info("createDTO = {}", postDto);
+
         if (bindingResult.hasErrors()) {
             return "post/postForm";
         }

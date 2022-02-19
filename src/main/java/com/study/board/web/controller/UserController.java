@@ -1,16 +1,14 @@
 package com.study.board.web.controller;
 
+import com.study.board.web.common.UserSessionData;
 import com.study.board.web.dto.boarddto.PaginationDto;
-import com.study.board.web.dto.userdto.UserInfoDto;
-import com.study.board.web.dto.userdto.UserPublishedPostDto;
+import com.study.board.web.dto.userdto.*;
+import com.study.board.web.exception.UserNotAuthorizationException;
 import com.study.board.web.service.UserService;
-import com.study.board.web.dto.userdto.UserIdDuplicationDto;
-import com.study.board.web.dto.userdto.UserSignupDto;
 import com.study.board.web.util.Constants;
 import com.study.board.web.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.h2.engine.Mode;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +58,7 @@ public class UserController {
     @GetMapping("/info/{userId}") //user/{userId}?page=
     public String getUserInfo(@PathVariable String userId,
                               @RequestParam(name = "page",defaultValue = "1") Integer page,
+                              @SessionAttribute(name = "userSessionData", required = false) UserSessionData userSessionData,
                               Model model) {
         Page<UserPublishedPostDto> userPostList = userService.getUserPostList(page, userId);
 
@@ -67,16 +66,44 @@ public class UserController {
                 Constants.SHOW_ONE_PAGE_BLOCK, Constants.SHOW_ONE_PAGE_POST, page);
 
         UserInfoDto userInfoDto = new UserInfoDto(userId, userPostList.getContent());
-        log.info("userDto = {}",userInfoDto);
+
+        boolean isRoleUser = false;
+
+        if (userSessionData != null) {
+            isRoleUser = userSessionData.getUserId().equals(userId);
+        }
+
         model.addAttribute("userInfo",userInfoDto);
         model.addAttribute("pagination",paginationDto);
+        model.addAttribute("hasRole",isRoleUser);
 
         return "user/userInfoForm";
     }
 
     @GetMapping("/edit/{userId}")
-    public String userEditForm(@PathVariable String userId) {
-        return null;
+    public String userEditForm(@PathVariable String userId, Model model,
+                               @SessionAttribute(name = "userSessionData",required = false) UserSessionData userSessionData) {
+        if (userSessionData == null || !userSessionData.getUserId().equals(userId)) {
+            throw new UserNotAuthorizationException("접근 권한이 없는 유저");
+        }
+        UserEditDto userEditInfo = userService.getUserEditInfo(userId);
+
+        model.addAttribute("userId",userId);
+        model.addAttribute("userEditDto",userEditInfo);
+        return "user/userEditForm";
+    }
+
+    @PostMapping("/edit/{userId}")
+    public String userEdit(@PathVariable String userId, @Valid @ModelAttribute("userEditDto") UserEditDto userEditDto,
+                           BindingResult bindingResult,
+                           @SessionAttribute("userSessionData") UserSessionData userSessionData) {
+
+        if (bindingResult.hasErrors()) {
+            return "user/userEditForm";
+        }
+        userService.userInfoChange(userEditDto,userId);
+        userSessionData.setUserNickName(userEditDto.getNickName());
+        return "redirect:/";
     }
 
 }

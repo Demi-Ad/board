@@ -1,6 +1,5 @@
 package com.study.board.domain.entity.user;
 
-import com.study.board.domain.entity.post.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -50,8 +47,7 @@ public class User {
         this.email = email;
     }
 
-    public void changeInfo(String password, String nickname, String email) {
-        this.password = password;
+    public void changeInfo(String nickname, String email) {
         this.nickname = nickname;
         this.email = email;
     }

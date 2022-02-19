@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{common/head :: head}">
+    <title></title>
+</head>
+<body>
+<header th:replace="common/header :: header"></header>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-3">
+            <div style="width: 280px;">
+                <a class="align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <!--                    <span class="fs-4" th:text="${userInfo.userId}"></span> &lt;!&ndash; 유저이름 &ndash;&gt;-->
+                </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a aria-current="page" class="nav-link link-dark" th:href="@{/user/info/{userId}(userId=${userId})}">
+                            작성글
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link active" href="#">
+                            정보수정 <!-- 세션 체크 -->
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+            </div>
+        </div>
+        <div class="col-9">
+            <!-- 여기에 유저 폼-->
+            <div class="card-body p-4 p-xl-6">
+                <h2 class="text-100 text-center">정보수정</h2>
+                <form class="validation-form" method="post" th:object="${userEditDto}">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="nickname">닉네임</label>
+                            <input class="form-control" id="nickname" placeholder="닉네임을 입력해주세요" required
+                                   type="text" th:field="*{nickName}">
+                            <div th:errors="*{nickName}" class="ui-state-error-text"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email">이메일</label>
+                            <input class="form-control" id="email" placeholder="you@example.com"
+                                   type="email" th:field="*{email}">
+                            <div class="text-muted">이메일도움말</div>
+                        </div>
+
+                        <hr class="mb-4">
+                        <div class="d-grid">
+                            <button class="btn btn-primary" id="btn-signup" type="submit">수정 완료</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<div th:replace="common/head :: ws"></div>
+</html>
