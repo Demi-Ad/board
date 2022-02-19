@@ -14,6 +14,7 @@ import java.util.List;
 public class PostResponseDto {
 
     private Long id;
+    private String userId;
     private String title;
     private String content;
     private String author;
@@ -23,10 +24,11 @@ public class PostResponseDto {
     private List<CommentResponseDto> commentList = new ArrayList<>();
 
     @Builder
-    public PostResponseDto(Long id, String title, String content, String author, LocalDateTime lastModifiedDate,
+    public PostResponseDto(Long id, String title, String userId, String content, String author, LocalDateTime lastModifiedDate,
                            boolean isUpdatable, List<CommentResponseDto> commentList) {
         this.id = id;
         this.title = title;
+        this.userId = userId;
         this.content = content;
         this.author = author;
         this.lastModifiedDate = lastModifiedDate;

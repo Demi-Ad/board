@@ -5,5 +5,18 @@ server:
             tracking-modes: COOKIE
 
 spring:
-    profiles:
-        default: create
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: demi
+        password: password
+        url: jdbc:mysql://localhost:3306/board?serverTimezone=Asia/Seoul
+    jpa:
+        hibernate:
+            ddl-auto: none
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+                default_batch_fetch_size: 100
+    thymeleaf:
+        cache: false

@@ -29,10 +29,7 @@ public class BoardController {
     private final PaginationUtil paginationUtil;
 
 
-
-
-
-    @GetMapping()
+    @GetMapping
     public String boardList(@RequestParam(value = "page",defaultValue = "1") int pageNum, Model model) {
         Page<BoardListDto> postList = boardService.getPostList(pageNum);
 
@@ -40,7 +37,6 @@ public class BoardController {
                 Constants.SHOW_ONE_PAGE_BLOCK,
                 Constants.SHOW_ONE_PAGE_POST, pageNum);
 
-        log.info("paginationDto = {}", paginationDto);
         model.addAttribute("searchCriteria",new SearchCriteria());
         model.addAttribute("postList", postList);
         model.addAttribute("pagination",paginationDto);

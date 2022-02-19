@@ -50,6 +50,31 @@
                     </tbody>
                 </table>
             </div>
+            <div class="col-4 offset-5 mt-5">
+                <div th:if="${!userInfo.publishedPostDtoList.isEmpty()}">
+                    <nav style="text-align: center;" th:with="startPage = ${pagination.startPage}, endPage = ${pagination.endPage}">
+                        <ul class="pagination">
+                            <li th:classappend="${pagination.isHasPrev() == false ? 'disabled' : ''}" class="page-item">
+                                <a th:href="@{/user/info/{userId}(userId=${userInfo.userId},page=${pagination.curPage - 1})}" aria-label="Previous" class="page-link">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+
+                            <li th:each="page: ${#numbers.sequence(startPage,endPage)}"
+                                th:classappend="${pagination.curPage == page ? 'active' : ''}"
+                                class="page-item">
+                                <a class="page-link" th:text="${page}" th:href="@{/user/info/{userId}(userId=${userInfo.userId},page=${page})}"></a>
+                            </li>
+
+                            <li th:classappend="${pagination.isHasNext() == false ? 'disabled' : ''}" class="page-item">
+                                <a th:href="@{/user/info/{userId}(userId=${userInfo.userId},page=${pagination.curPage + 1})}" aria-label="Next" class="page-link">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
 </div>

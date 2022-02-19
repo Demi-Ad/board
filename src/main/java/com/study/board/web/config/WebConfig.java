@@ -1,6 +1,7 @@
 package com.study.board.web.config;
 
 import com.study.board.web.config.interceptor.UserAuthorizationInterceptor;
+import com.study.board.web.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,9 +14,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final UserAuthorizationInterceptor userAuthorizationInterceptor;
 
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**").addResourceLocations("file:///D:/java/images/");
+        registry.addResourceHandler("/images/**").addResourceLocations(Constants.RESOURCE_LOCATION);
     }
 
     @Override

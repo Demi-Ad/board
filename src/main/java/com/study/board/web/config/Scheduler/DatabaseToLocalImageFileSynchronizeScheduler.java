@@ -1,6 +1,7 @@
 package com.study.board.web.config.Scheduler;
 
 import com.study.board.domain.entity.post.repository.PostRepository;
+import com.study.board.web.util.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,16 +27,16 @@ public class DatabaseToLocalImageFileSynchronizeScheduler {
 
     private final Pattern pattern = Pattern.compile("<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>");
 
-    private final String imagePath = "D:\\java\\images";
-
-
-
-    @Scheduled(fixedRate = 1000 * 60 * 5, initialDelay = 1000 * 60 * 5)
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 12, initialDelay = 1000 * 60 * 5)
     public void synchronizeTask() {
+        log.info("synchronizeTask Start");
+
         List<String> list = postRepository.findAllContents();
 
-        if (list.size() == 0)
+        if (list.size() == 0) {
+            log.warn("synchronizeTask stop reason = No Content");
             return;
+        }
 
         List<String> databaseImgList = new ArrayList<>();
 
@@ -52,8 +53,9 @@ public class DatabaseToLocalImageFileSynchronizeScheduler {
 
         log.info("databaseImg = {}",databaseImgList);
 
-        File imgDir = new File(imagePath);
+        File imgDir = new File(Constants.IMAGE_PATH);
         if (imgDir.listFiles() == null) {
+            log.warn("synchronizeTask stop reason = No LocalImage");
             return;
         }
         List<String> localImageList = Arrays.stream(Objects.requireNonNull(imgDir.listFiles()))
@@ -64,11 +66,15 @@ public class DatabaseToLocalImageFileSynchronizeScheduler {
 
         localImageList.removeAll(databaseImgList);
 
-        if (localImageList.size() == 0)
+        if (localImageList.size() == 0) {
+            log.info("synchronizeTask stop reason = early synchronize");
             return;
+        }
 
         localImageList.stream()
-                .map(img -> new File(imagePath + "//" + img))
+                .map(img -> new File(Constants.IMAGE_PATH + "//" + img))
                 .forEach(File::delete);
+
+        log.info("synchronizeTask End");
     }
 }
