@@ -65,17 +65,4 @@ public class BoardController {
         model.addAttribute("pagination",paginationDto);
         return "board/searchPostList";
     }
-
-
-//    @PostConstruct
-//    void init() {
-//        User user = new User("votm777","ttpp1212","aaaa","");
-//        Long userIdx = userService.join(user);
-//
-//        for (int i = 0; i < 100; i++) {
-//            Post post = new Post("테스트 " + i, "data");
-//            post.userPublish(user);
-//            repository.save(post);
-//        }
-//    }
 }

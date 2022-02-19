@@ -19,8 +19,8 @@
                             작성글
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link link-dark" href="#">
+                    <li th:if="${hasRole}">
+                        <a class="nav-link link-dark" th:href="@{/user/edit/{userId}(userId=${userInfo.userId})}">
                             정보수정 <!-- 세션 체크 -->
                         </a>
                     </li>

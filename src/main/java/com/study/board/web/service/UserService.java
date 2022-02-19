@@ -4,11 +4,12 @@ import com.study.board.domain.entity.post.Post;
 import com.study.board.domain.entity.post.repository.PostRepository;
 import com.study.board.domain.entity.user.User;
 import com.study.board.domain.entity.user.repository.UserRepository;
-import com.study.board.web.dto.userdto.UserPublishedPostDto;
-import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.common.UserSessionData;
+import com.study.board.web.dto.userdto.UserEditDto;
 import com.study.board.web.dto.userdto.UserLoginDto;
+import com.study.board.web.dto.userdto.UserPublishedPostDto;
 import com.study.board.web.dto.userdto.UserSignupDto;
+import com.study.board.web.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -43,12 +44,23 @@ public class UserService {
         return !userRepository.existsByUserIdEquals(userId);
     }
 
-
+    @Transactional(readOnly = true)
     public Page<UserPublishedPostDto> getUserPostList(Integer page,String userId) {
         PageRequest request = PageRequest.of(page-1, 10, Sort.Direction.DESC, "createdDate");
         Page<Post> userPublishedPostList = postRepository.getByUser_UserIdEquals(userId,request);
         log.info("service Dto = {}",userPublishedPostList);
         return userPublishedPostList.map(UserPublishedPostDto::new);
+    }
+
+    @Transactional(readOnly = true)
+    public UserEditDto getUserEditInfo(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+        return new UserEditDto(user);
+    }
+
+    public void userInfoChange(UserEditDto userEditDto, String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+        user.changeInfo(userEditDto.getNickName(),userEditDto.getEmail());
     }
 
 }
