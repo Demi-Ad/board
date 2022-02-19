@@ -34,6 +34,10 @@
         <link th:href="@{/css/summernote-lite.min.css}" rel="stylesheet">
     </th:block>
 
+    <th:block th:if="${#request.getRequestURI().matches('\/post\/[0-9]+\/')}">
+
+    </th:block>
+
 </head>
 <body>
 <script th:fragment="ws" type="text/javascript" th:if="${session.userSessionData}" th:inline="javascript"

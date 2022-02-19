@@ -4,12 +4,12 @@ import com.study.board.domain.entity.post.Post;
 import com.study.board.domain.entity.post.repository.PostRepository;
 import com.study.board.domain.entity.user.User;
 import com.study.board.domain.entity.user.repository.UserRepository;
-import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.common.UserSessionData;
 import com.study.board.web.dto.commentdto.CommentResponseDto;
-import com.study.board.web.exception.PostNotFoundException;
-import com.study.board.web.dto.postdto.PostResponseDto;
 import com.study.board.web.dto.postdto.PostDto;
+import com.study.board.web.dto.postdto.PostResponseDto;
+import com.study.board.web.exception.PostNotFoundException;
+import com.study.board.web.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -74,6 +74,7 @@ public class PostService {
         return PostResponseDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
+                .userId(post.getUser().getUserId())
                 .author(post.getUser().getNickname())
                 .content(post.getContents())
                 .lastModifiedDate(post.getUpdatedDate())

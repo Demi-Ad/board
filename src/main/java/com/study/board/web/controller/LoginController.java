@@ -1,9 +1,9 @@
 package com.study.board.web.controller;
 
 import com.study.board.web.common.UserSessionData;
-import com.study.board.web.service.UserService;
-import com.study.board.web.exception.UserNotFoundException;
 import com.study.board.web.dto.userdto.UserLoginDto;
+import com.study.board.web.exception.UserNotFoundException;
+import com.study.board.web.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -42,6 +42,7 @@ public class LoginController {
         try {
             UserSessionData userSessionData = userService.login(dto);
             HttpSession session = request.getSession(true);
+            session.setMaxInactiveInterval(60 * 60);
             session.setAttribute("userSessionData",userSessionData);
 
             String requestUri = request.getParameter("requestUri");

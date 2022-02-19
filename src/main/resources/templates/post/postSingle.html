@@ -16,8 +16,10 @@
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-1 mt-2" th:text="${post.title}">Welcome to Blog Post!</h1>
                     <!-- Post meta content-->
-                    <div class="text-muted fst-italic mb-2" th:text="|Posted On ${#temporals.format(post.lastModifiedDate,'MM dd, yyyy')} by ${post.author}|">
-                        Posted on January 1, 2021 by Start Bootstrap
+                    <div class="mb-2">
+                        <a class="text-muted fst-italic" th:href="@{/user/info/{userId}(userId=${post.userId})}"
+                           th:text="|Posted On ${#temporals.format(post.lastModifiedDate,'MM dd, yyyy')} by ${post.author}|">
+                        </a>
                     </div>
                     <!-- Post categories-->
                     <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
