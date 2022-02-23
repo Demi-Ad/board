@@ -52,7 +52,7 @@
             <nav style="text-align: center;" th:with="startPage = ${pagination.startPage}, endPage = ${pagination.endPage}">
                 <ul class="pagination">
                     <li th:classappend="${pagination.isHasPrev() == false ? 'disabled' : ''}" class="page-item">
-                        <a th:href="@{/board(page=${pagination.curPage - 1})}" aria-label="Previous" class="page-link">
+                        <a th:href="@{/board/search(searchType=${searchCriteria.searchType},searchText=${searchCriteria.searchText},page=${pagination.curPage - 1})}" aria-label="Previous" class="page-link">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
@@ -65,7 +65,7 @@
                     </li>
 
                     <li th:classappend="${pagination.isHasNext() == false ? 'disabled' : ''}" class="page-item">
-                        <a th:href="@{/board(page=${pagination.curPage + 1})}" aria-label="Next" class="page-link">
+                        <a th:href="@{/board/search(searchType=${searchCriteria.searchType},searchText=${searchCriteria.searchText},page=${pagination.curPage + 1})}" aria-label="Next" class="page-link">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>

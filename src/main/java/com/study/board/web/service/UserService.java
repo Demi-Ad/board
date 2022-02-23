@@ -27,6 +27,7 @@ public class UserService {
 
     private final PostRepository postRepository;
 
+    @Transactional(readOnly = true)
     public UserSessionData login(UserLoginDto loginDto) throws UserNotFoundException {
 
         User user = userRepository.findByUserIdAndPassword(loginDto.getUserId(), loginDto.getUserPassword())
@@ -39,7 +40,7 @@ public class UserService {
         return userRepository.save(signupDto.toEntity()).getId();
     }
 
-
+    @Transactional(readOnly = true)
     public Boolean idDuplicateCheck(String userId) {
         return !userRepository.existsByUserIdEquals(userId);
     }
