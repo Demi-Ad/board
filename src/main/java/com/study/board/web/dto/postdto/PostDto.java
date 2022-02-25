@@ -37,4 +37,11 @@ public class PostDto {
         this.contents = postResponseDto.getContent();
     }
 
+    public PostDto(Post post) {
+        this.userId = post.getUser().getUserId();
+        this.userNickname = post.getUser().getNickname();
+        this.title = post.getTitle();
+        this.contents = post.getContents();
+    }
+
 }

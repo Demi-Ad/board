@@ -19,7 +19,7 @@ public class BoardService {
     private final PostRepository postRepository;
 
     public Page<BoardListDto> getPostList(int pageNum) {
-        PageRequest pageRequest = PageRequest.of(pageNum-1, 10, Sort.Direction.DESC, "createdDate");
+        PageRequest pageRequest = PageRequest.of(pageNum-1, 10, Sort.Direction.DESC, "createdDate", "id");
         return postRepository.findAll(pageRequest).map(BoardListDto::new);
     }
 

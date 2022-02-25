@@ -49,7 +49,6 @@ public class PostController {
     @PostMapping("/new")
     public String postCreate(@Valid @ModelAttribute("postData") PostDto postDto,
                              BindingResult bindingResult,
-                             @SessionAttribute UserSessionData userSessionData,
                              RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
@@ -67,11 +66,9 @@ public class PostController {
     @GetMapping("/{postId}")
     public String postSingle(@PathVariable Long postId, Model model, HttpServletRequest request,
                              @SessionAttribute(required = false) UserSessionData userSessionData) {
-        String referer = request.getHeader("Referer");
+        boolean isCountUp = isCountUp(request);
 
-        boolean isCountUp = referer == null || (!referer.contains("edit") && !referer.contains("new") && !referer.contains("post"));
-
-        PostResponseDto post = postService.findPost(postId,isCountUp);
+        PostResponseDto post = postService.findPost(postId,isCountUp,userSessionData);
 
         CommentRequestDto commentRequestDto = getCommentRequestDto(postId, userSessionData);
 
@@ -79,6 +76,12 @@ public class PostController {
         model.addAttribute("commentForm",commentRequestDto);
 
         return "post/postSingle";
+    }
+
+    private boolean isCountUp(HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+
+        return referer == null || (!referer.contains("edit") && !referer.contains("new") && !referer.contains("post"));
     }
 
     private CommentRequestDto getCommentRequestDto(Long postId, UserSessionData userSessionData) {
@@ -96,8 +99,7 @@ public class PostController {
     public String pageEditForm(@PathVariable Long postId, Model model,
                                @SessionAttribute(required = false) UserSessionData userSessionData) {
 
-        PostDto postDto = new PostDto(postService.findPost(postId, false),
-                userSessionData.getUserId());
+        PostDto postDto = postService.findPostDto(postId);
 
         model.addAttribute("postData", postDto);
         model.addAttribute("postId",postId);

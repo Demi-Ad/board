@@ -14,11 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -42,34 +38,19 @@ public class PostService {
     }
 
 
-
-
-    public PostResponseDto findPost(Long postId, boolean isCountUp) throws PostNotFoundException {
+    public PostDto findPostDto(Long postId) throws PostNotFoundException {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        UserSessionData userSessionData = null;
+        return new PostDto(post);
+    }
 
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes)
-                RequestContextHolder.getRequestAttributes();
+    public PostResponseDto findPost(Long postId, boolean isCountUp, final UserSessionData userSessionData) throws PostNotFoundException {
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
 
-        boolean isUpdatable = false;
+        boolean isUpdatable = userSessionData != null && Objects.equals(userSessionData.getId(),post.getUser().getId());
 
-        if (requestAttributes != null) {
-            HttpServletRequest request = requestAttributes.getRequest();
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                userSessionData = (UserSessionData) session.getAttribute("userSessionData");
-                if (userSessionData != null) {
-                    if (Objects.equals(post.getUser().getId(), userSessionData.getId())) {
-                        isUpdatable = true;
-                    }
-                }
-            }
-        }
         if (isCountUp) {
             post.postHit();
         }
-
-        UserSessionData tempUserSessionData = userSessionData;
 
         return PostResponseDto.builder()
                 .id(post.getId())
@@ -82,10 +63,10 @@ public class PostService {
                 .commentList(post.getCommentList()
                         .stream()
                         .map(comment -> {
-                            if (tempUserSessionData == null) {
+                            if (userSessionData == null) {
                                 return new CommentResponseDto(comment,false);
                             } else {
-                                if (Objects.equals(tempUserSessionData.getUserId(), comment.getUser().getUserId())) {
+                                if (Objects.equals(userSessionData.getUserId(), comment.getUser().getUserId())) {
                                     return new CommentResponseDto(comment,true);
                                 } else {
                                     return new CommentResponseDto(comment,false);
