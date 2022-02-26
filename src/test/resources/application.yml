@@ -1,12 +1,12 @@
 spring:
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: demi
-        password: password
-        url: jdbc:mysql://localhost:3306/board?serverTimezone=Asia/Seoul
+        driver-class-name: org.h2.Driver
+        username: sa
+        password:
+        url: jdbc:h2:mem:testdb
     jpa:
         hibernate:
-            ddl-auto: none
+            ddl-auto: create
         show-sql: true
         properties:
             hibernate:
