@@ -18,7 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
     @Override
-    @EntityGraph(attributePaths = {"commentList"})
+    @EntityGraph(attributePaths = {"user","commentList"})
     Optional<Post> findById(Long id);
 
     @EntityGraph(attributePaths = {"user"})
